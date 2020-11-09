@@ -17,6 +17,7 @@ blogRouter.post('/blogs', async (request, response) => {
     response.status(400).end()
   } else {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    console.log(decodedToken.id)
     if (!decodedToken || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
@@ -29,7 +30,8 @@ blogRouter.post('/blogs', async (request, response) => {
         author: body.author,
         url: body.url,
         likes: body.likes ? body.likes : 0,
-        user: user._id
+        user: user._id,
+        comments: body.comments
       })
 
       const result = await blog.save()
